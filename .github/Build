@@ -1,0 +1,21 @@
+name: Flutter Build and Release      # 工作流名称（可选）
+on:                                   # 触发条件
+  push:
+    branches: [ main ]                 # 监听的分支
+jobs:                                  # 作业定义
+  build:                                # 作业名称
+    runs-on: ubuntu-latest             # 运行环境
+    steps:                               # 执行步骤
+      - name: Checkout code            # 步骤名称
+        uses: actions/checkout@v4      # 使用官方 action
+      - name: Set up Flutter          # 步骤名称
+        uses: subosito/flutter-action@v3 # 推荐使用 v3+
+        with:
+          flutter-version: '3.10.0'     # 明确指定 Flutter 版本
+      - name: Build APK
+        run: flutter build apk --release
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
